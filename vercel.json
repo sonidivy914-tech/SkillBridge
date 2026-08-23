@@ -1,3 +1,7 @@
 {
-  "cleanUrls": true
+  "version": 2,
+  "routes": [
+    { "src": "/api/gemini", "dest": "/api/gemini.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
