@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/api/gemini", "destination": "/api/gemini.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
