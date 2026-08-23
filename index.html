@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillBridge — Skill Gap Analyzer for GTU Students</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================
+       1. DESIGN SYSTEM & CSS VARIABLES
+       ========================================== */
+    :root {
+      /* Base Theme Colors (Light) */
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-subtle: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #185fa5;
+      --accent-hover: #134e88;
+      --accent-light: #e0f2fe;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+      /* Color Palette Tints & Shades */
+      --blue-50: #eff6ff;
+      --blue-600: #2563eb;
+      --blue-800: #1e40af;
+
+      --teal-50: #f0fdf4;
+      --teal-600: #0d9488;
+      --teal-800: #115e59;
+
+      --amber-50: #fffbeb;
+      --amber-600: #d97706;
+      --amber-800: #92400e;
+
+      --green-50: #f0fdf4;
+      --green-600: #16a34a;
+      --green-800: #166534;
+
+      --coral-50: #fff1f2;
+      --coral-600: #e11d48;
+      --coral-800: #9f1239;
+
+      --purple-50: #faf5ff;
+      --purple-600: #9333ea;
+      --purple-800: #6b21a8;
+
+      --hero-grad: linear-gradient(135deg, #185fa5 0%, #0d9488 100%);
+    }
+
+    [data-theme="dark"] {
+      /* Base Theme Colors (Dark) */
+      --bg: #0b1329;
+      --card: #131f37;
+      --card-subtle: #1a2947;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #243452;
+      --accent: #38bdf8;
+      --accent-hover: #7dd3fc;
+      --accent-light: rgba(56, 189, 248, 0.15);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+      /* Dark Mode Adjusted Tints */
+      --blue-50: rgba(37, 99, 235, 0.15);
+      --blue-600: #60a5fa;
+      --blue-800: #93c5fd;
+
+      --teal-50: rgba(13, 148, 136, 0.15);
+      --teal-600: #2dd4bf;
+      --teal-800: #5eead4;
+
+      --amber-50: rgba(217, 119, 6, 0.15);
+      --amber-600: #fbbf24;
+      --amber-800: #fde68a;
+
+      --green-50: rgba(22, 163, 74, 0.15);
+      --green-600: #4ade80;
+      --green-800: #86efac;
+
+      --coral-50: rgba(225, 29, 72, 0.15);
+      --coral-600: #fb7185;
+      --coral-800: #fca5a5;
+
+      --purple-50: rgba(147, 51, 234, 0.15);
+      --purple-600: #c084fc;
+      --purple-800: #e9d5ff;
+
+      --hero-grad: linear-gradient(135deg, #0f2b48 0%, #0d4b47 100%);
+    }
+
+    /* Reset & Base Styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Sora', sans-serif;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none !important;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="dark"] .btn-primary {
+      color: #0b1329;
+    }
+
+    .btn-secondary {
+      background-color: var(--card);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--card-subtle);
+      border-color: var(--text-muted);
+    }
+
+    .btn-ai {
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+    }
+    .btn-ai:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.85rem;
+      font-size: 0.875rem;
+    }
+
+    /* Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-blue { background-color: var(--blue-50); color: var(--blue-800); }
+    .badge-teal { background-color: var(--teal-50); color: var(--teal-800); }
+    .badge-amber { background-color: var(--amber-50); color: var(--amber-800); }
+    .badge-coral { background-color: var(--coral-50); color: var(--coral-800); }
+    .badge-purple { background-color: var(--purple-50); color: var(--purple-800); }
+
+    /* Card Wrapper */
+    .card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================
+       2. HEADER & NAVIGATION
+       ========================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--card);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .nav-link:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background-color: var(--card-subtle);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    /* ==========================================
+       3. HERO SECTION & STATS BAR
+       ========================================== */
+    .hero {
+      background: var(--hero-grad);
+      color: #ffffff;
+      padding: 4.5rem 0 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(10px);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+      font-weight: 400;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      background-color: #ffffff;
+      color: #185fa5;
+      font-size: 1.05rem;
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    .hero-cta:hover {
+      background-color: #f8fafc;
+      transform: translateY(-2px);
+      color: #134e88;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      margin-top: -2rem;
+      position: relative;
+      z-index: 10;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1rem;
+      box-shadow: var(--shadow-md);
+    }
+    .stat-item {
+      text-align: center;
+      padding: 0 0.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child {
+      border-right: none;
+    }
+    .stat-number {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+
+    /* ==========================================
+       4. ANALYZER SECTION (STEPPER & FORM)
+       ========================================== */
+    .analyzer-section {
+      padding: 4rem 0;
+    }
+
+    /* Stepper */
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--card-subtle);
+      border: 2px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+    .step-item.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .step-item.active .step-number {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+    [data-theme="dark"] .step-item.active .step-number {
+      color: #0b1329;
+    }
+    .step-item.completed {
+      color: var(--teal-600);
+    }
+    .step-item.completed .step-number {
+      background-color: var(--teal-600);
+      border-color: var(--teal-600);
+      color: #ffffff;
+    }
+    .step-divider {
+      width: 40px;
+      height: 2px;
+      background-color: var(--border);
+    }
+
+    /* Form Grids */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .form-control {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      color: var(--text);
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    /* Skills Selection Box */
+    .skills-wrapper {
+      margin-top: 1.75rem;
+    }
+    .skills-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.85rem;
+      min-height: 120px;
+    }
+    
+    .placeholder-box {
+      grid-column: 1 / -1;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      background-color: var(--card-subtle);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Skill Chips */
+    .skill-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background-color: var(--card);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+      font-size: 0.875rem;
+      font-weight: 500;
+      position: relative;
+    }
+    .skill-chip:hover {
+      border-color: var(--accent);
+      background-color: var(--card-subtle);
+    }
+    .skill-chip.selected {
+      border-color: var(--accent);
+      background-color: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .dot-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--border);
+      transition: var(--transition);
+    }
+    .skill-chip.selected .dot-indicator {
+      background-color: var(--accent);
+    }
+    .chip-type-tag {
+      font-size: 0.7rem;
+      margin-left: auto;
+      opacity: 0.7;
+    }
+
+    .analyze-action {
+      margin-top: 2rem;
+    }
+    .btn-analyze {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+    }
+
+    /* ==========================================
+       5. RESULTS SECTION
+       ========================================== */
+    .results-section {
+      padding: 2rem 0 5rem 0;
+      display: none; /* revealed on analysis */
+    }
+    .results-section.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .results-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Score Header Card */
+    .score-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 2rem;
+      align-items: center;
+    }
+    .score-info h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .score-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .progress-bar-outer {
+      width: 100%;
+      height: 12px;
+      background-color: var(--card-subtle);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 1.25rem 0 0.5rem 0;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%; /* Animated via JS */
+      background: linear-gradient(90deg, #185fa5 0%, #0d9488 100%);
+      border-radius: 9999px;
+      transition: width 1.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+
+    .score-badge-circle {
+      text-align: center;
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      background-color: var(--card-subtle);
+      border: 1px solid var(--border);
+    }
+    .score-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .score-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Tabs Bar */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 0.85rem 1.4rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      margin-bottom: -2px;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Tab 1: Skill Analysis */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .skill-list-card h4 {
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .skill-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-item-row:last-child {
+      border-bottom: none;
+    }
+    .skill-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 500;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .status-dot.have { background-color: var(--teal-600); }
+    .status-dot.missing { background-color: var(--coral-600); }
+
+    /* Tab 2: Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin-top: 1.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 5px;
+      bottom: 5px;
+      width: 2px;
+      background-color: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -2rem;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--card);
+      border: 3px solid var(--accent);
+    }
+    .timeline-month {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .timeline-title {
+      font-size: 1.1rem;
+      margin: 0.2rem 0 0.4rem 0;
+    }
+    .timeline-desc {
+      color: var(--text-muted);
+      font-size: 0.925rem;
+    }
+
+    /* Tab 3: Job Market Table & AI Box */
+    .ai-box {
+      background-color: var(--card-subtle);
+      border: 1px dashed var(--accent);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .ai-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .ai-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 0.75rem;
+    }
+
+    .jobs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .jobs-table th, .jobs-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .jobs-table th {
+      background-color: var(--card-subtle);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .job-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .job-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    /* Tab 4: Free Resources Grid */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .resource-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: var(--transition);
+    }
+    .resource-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .resource-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .resource-icon {
+      font-size: 1.5rem;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Inline Alert Box */
+    .alert-box {
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .alert-warning {
+      background-color: var(--amber-50);
+      color: var(--amber-800);
+      border: 1px solid var(--amber-600);
+    }
+    .alert-error {
+      background-color: var(--coral-50);
+      color: var(--coral-800);
+      border: 1px solid var(--coral-600);
+    }
+
+    /* ==========================================
+       6. FOOTER
+       ========================================== */
+    footer {
+      background-color: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 2rem 0;
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+    .footer-credits {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* ==========================================
+       7. RESPONSIVE MEDIA QUERIES
+       ========================================== */
+    @media (max-width: 900px) {
+      .hero-title { font-size: 2.2rem; }
+      .score-card { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+      .analysis-grid { grid-template-columns: 1fr; }
+      .ai-inputs { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
+      .stat-item { border-right: none; }
+      .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
+      .form-grid { grid-template-columns: 1fr; }
+      .stepper { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .step-divider { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; } /* Hide under 600px */
+      .hero { padding: 3rem 0 3.5rem 0; }
+      .hero-title { font-size: 1.8rem; }
+      .container { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAVIGATION BAR
+       ========================================== -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        Skill<span>Bridge</span> 🎓
+      </a>
+      <ul class="nav-links">
+        <li><a href="#analyzer" class="nav-link">Analyzer</a></li>
+        <li><a href="#results" class="nav-link">Jobs & Roadmap</a></li>
+        <li><a href="#about" class="nav-link">About Project</a></li>
+      </ul>
+      <div class="nav-controls">
+        <button id="themeToggleBtn" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+          <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+        </button>
+        <a href="#analyzer" class="btn btn-primary btn-sm">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO SECTION
+       ========================================== -->
+  <section class="hero">
+    <div class="container hero-content">
+      <span class="badge hero-badge">🎓 For All Engineering & Commerce Students</span>
+      <h1 class="hero-title">Find Your Skill Gaps. Build Your Career Path.</h1>
+      <p class="hero-subtitle">
+        Compare your current skills against top industry roles in Gujarat & India. Get an instant job-readiness score, month-by-month learning roadmap, curated job listings, and free resources.
+      </p>
+      <a href="#analyzer" class="btn hero-cta">Analyze My Skills →</a>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       STATS BAR
+       ========================================== -->
+  <div class="container stats-bar">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">80+</div>
+        <div class="stat-label">In-demand skills tracked</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Career paths mapped</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Free learning resources</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Students helped</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       ANALYZER SECTION
+       ========================================== -->
+  <section id="analyzer" class="analyzer-section">
+    <div class="container" style="max-width: 1050px;">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div id="step1Indicator" class="step-item active">
+          <div class="step-number">1</div>
+          <span>Your Profile</span>
+        </div>
+        <div class="step-divider"></div>
+        <div id="step2Indicator" class="step-item">
+          <div class="step-number">2</div>
+          <span>Current Skills</span>
+        </div>
+        <div class="step-divider"></div>
+        <div id="step3Indicator" class="step-item">
+          <div class="step-number">3</div>
+          <span>Results & Roadmap</span>
+        </div>
+      </div>
+
+      <!-- Step 1 Card: Profile -->
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h3 style="margin-bottom: 1.25rem; font-size: 1.2rem;">📋 Step 1: Tell Us About Yourself</h3>
+        <div class="form-grid">
+          
+          <div class="form-group">
+            <label class="form-label" for="userName">Full Name</label>
+            <input type="text" id="userName" class="form-control" placeholder="e.g. Patel Rahul" value="Student User">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="educationLevel">Education Level</label>
+            <select id="educationLevel" class="form-control">
+              <option value="BE CS/IT">BE / B.Tech (Computer / IT)</option>
+              <option value="BE Mechanical">BE / B.Tech (Mechanical)</option>
+              <option value="BE Civil">BE / B.Tech (Civil)</option>
+              <option value="BE EC/Electrical">BE / B.Tech (Electrical / EC)</option>
+              <option value="BE Graduate">BE / B.Tech Graduate (Other)</option>
+              <option value="Diploma">Diploma Engineering</option>
+              <option value="M.Tech/MCA">M.Tech / MCA</option>
+              <option value="B.Com/BBA">B.Com / BBA</option>
+              <option value="M.Com/MBA">M.Com / MBA</option>
+              <option value="12th Science">12th Science</option>
+              <option value="12th Commerce">12th Commerce</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="targetCareer">Target Career Path</label>
+            <select id="targetCareer" class="form-control" onchange="onCareerChange()">
+              <option value="" disabled selected>Select Target Career...</option>
+              
+              <optgroup label="💻 Information Technology & Software">
+                <option value="webdev">Full-Stack Web Developer (JS/React)</option>
+                <option value="datascience">Data Scientist / ML Engineer</option>
+                <option value="android">Android App Developer</option>
+                <option value="devops">DevOps & Cloud Engineer</option>
+                <option value="uiux">UI/UX Designer</option>
+              </optgroup>
+
+              <optgroup label="⚙️ Mechanical Engineering">
+                <option value="cad-designer">CAD & Product Design Engineer</option>
+                <option value="production-eng">Production & Manufacturing Engineer</option>
+                <option value="auto-eng">Automobile Engineer</option>
+              </optgroup>
+
+              <optgroup label="🏗️ Civil Engineering">
+                <option value="structural-eng">Structural Engineer</option>
+                <option value="construction-eng">Site & Construction Engineer</option>
+                <option value="urban-planner">Urban Planner & Surveyor</option>
+              </optgroup>
+
+              <optgroup label="⚡ Electrical & Electronics">
+                <option value="electrical-eng">Electrical Power Systems Engineer</option>
+                <option value="embedded-sys">Embedded Systems Engineer</option>
+                <option value="vlsi-design">VLSI & Chip Design Engineer</option>
+              </optgroup>
+
+              <optgroup label="📊 Commerce & Management">
+                <option value="accountant">Financial Accountant & Tax Analyst</option>
+                <option value="digital-marketing">Digital Marketing Specialist</option>
+                <option value="business-analyst">Business & Data Analyst</option>
+                <option value="entrepreneur">Business Manager / Entrepreneur</option>
+              </optgroup>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Step 2 Card: Dynamic Skills -->
+      <div class="card">
+        <div class="skills-header">
+          <div>
+            <h3 style="font-size: 1.2rem;">✅ Step 2: Select Skills You Already Know</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted);">Click on skills you possess or have hands-on experience with.</p>
+          </div>
+          <span id="selectedCountBadge" class="badge badge-blue">0 Selected</span>
+        </div>
+
+        <div id="skillsGrid" class="skills-grid">
+          <div class="placeholder-box">
+            🎯 Select your <strong>Target Career Path</strong> above to generate required & nice-to-have skill checkboxes.
+          </div>
+        </div>
+
+        <div class="analyze-action">
+          <button id="analyzeBtn" class="btn btn-primary btn-analyze" onclick="runAnalysis()">
+            🔍 Analyze My Skill Gap
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       RESULTS SECTION
+       ========================================== -->
+  <section id="results" class="results-section">
+    <div class="container" style="max-width: 1050px;">
+
+      <div class="results-header-row">
+        <div>
+          <h2 style="font-size: 1.75rem;">Your Skill Gap Analysis Report</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Personalized assessment and career roadmap</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="resetForm()">← Start Over</button>
+      </div>
+
+      <!-- Score Header Card -->
+      <div class="score-card">
+        <div class="score-info">
+          <span class="badge badge-teal" id="scoreTargetCareerTitle">Target Career</span>
+          <h3 style="margin-top: 0.4rem;" id="scoreHeadline">Calculated Readiness Score</h3>
+          <p id="scoreFeedbackText">Evaluating your baseline profile...</p>
+          <div class="progress-bar-outer">
+            <div id="progressBarInner" class="progress-bar-inner"></div>
+          </div>
+        </div>
+        <div class="score-badge-circle">
+          <div id="scorePercentageNum" class="score-num">0%</div>
+          <div class="score-label">Job Ready Score</div>
+        </div>
+      </div>
+
+      <!-- Result Tabs Header -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('tab-analysis', this)">📊 Skill Analysis</button>
+        <button class="tab-btn" onclick="switchTab('tab-roadmap', this)">🗺️ Learning Roadmap</button>
+        <button class="tab-btn" onclick="switchTab('tab-jobs', this)">💼 Job Market Insights</button>
+        <button class="tab-btn" onclick="switchTab('tab-resources', this)">📚 Free Resources</button>
+      </div>
+
+      <!-- TAB 1: SKILL ANALYSIS -->
+      <div id="tab-analysis" class="tab-content active">
+        <div class="analysis-grid">
+          
+          <div class="card skill-list-card">
+            <h4>
+              <span>🔴 Must-Have Required Skills</span>
+              <span id="reqRatioBadge" class="badge badge-amber">0/0</span>
+            </h4>
+            <div id="requiredSkillsList">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+          <div class="card skill-list-card">
+            <h4>
+              <span>🟡 Nice-to-Have Bonus Skills</span>
+              <span id="niceRatioBadge" class="badge badge-blue">0/0</span>
+            </h4>
+            <div id="niceSkillsList">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: LEARNING ROADMAP -->
+      <div id="tab-roadmap" class="tab-content">
+        <div class="card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+            <div>
+              <h3>Month-by-Month Career Roadmap</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Sequential milestones to bridge your missing skills</p>
+            </div>
+            <button id="aiRoadmapBtn" class="btn btn-ai btn-sm" onclick="findAIRoadmap()">
+              🤖 Enhance with AI
+            </button>
+          </div>
+
+          <div id="roadmapTimeline" class="timeline">
+            <!-- JS Populated -->
+          </div>
+
+          <div id="aiRoadmapBox" style="margin-top: 1.5rem;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: JOB MARKET -->
+      <div id="tab-jobs" class="tab-content">
+        <!-- AI Job Finder Box -->
+        <div class="ai-box">
+          <div class="ai-box-header">
+            <div>
+              <h4 style="display:flex; align-items:center; gap:0.5rem;">🤖 AI Job Matcher (Host Powered)</h4>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Find tailored job openings based on your specific missing skills</p>
+            </div>
+          </div>
+          <div class="ai-inputs">
+            <input type="text" id="aiJobCity" class="form-control" placeholder="Target City (e.g. Ahmedabad, Vadodara, Surat, Remote)">
+            <input type="text" id="aiJobPref" class="form-control" placeholder="Preferences (e.g. Startup, MNC, Entry-level)">
+            <button id="aiJobBtn" class="btn btn-ai" onclick="findAIJobs()">
+              Find AI Jobs
+            </button>
+          </div>
+          <div id="aiJobsContainer"></div>
+        </div>
+
+        <!-- Static Seeded Jobs Table -->
+        <div class="card">
+          <h3 style="margin-bottom: 1rem;">Gujarat & National Job Openings</h3>
+          <div style="overflow-x: auto;">
+            <table class="jobs-table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Company Type</th>
+                  <th>Location</th>
+                  <th>Avg. Salary</th>
+                  <th>Match</th>
+                </tr>
+              </thead>
+              <tbody id="jobsTableBody">
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: FREE RESOURCES -->
+      <div id="tab-resources" class="tab-content">
+        <div class="card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+            <div>
+              <h3>Curated Free Resources</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Hand-picked YouTube channels, docs, and practice platforms</p>
+            </div>
+            <button id="aiResourceBtn" class="btn btn-ai btn-sm" onclick="findAIResources()">
+              🤖 Find More with AI
+            </button>
+          </div>
+
+          <div id="staticResourcesGrid" class="resources-grid">
+            <!-- JS Populated -->
+          </div>
+
+          <div id="aiResourcesContainer" style="margin-top: 1.5rem;"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer id="about">
+    <div class="container footer-content">
+      <div class="logo">Skill<span>Bridge</span> 🎓</div>
+      <p class="footer-credits">
+        Built with ❤️ as an Internship Project for Gujarat Technological University (GTU)
+      </p>
+      <p style="max-width: 600px; font-size: 0.85rem;">
+        SkillBridge helps bridge the gap between academic curriculum and practical industry demands for engineering and commerce students across Gujarat & India.
+      </p>
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+        SkillBridge v2.0 • Host Server Edition • Secured `.env` Gemini Integration
+      </p>
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       JAVASCRIPT LOGIC & DATA MODEL
+       ========================================== -->
+  <script>
+    /* ==========================================
+       1. CAREER DATA MODEL (~20 CAREERS)
+       ========================================== */
+    const CAREER_DATA = {
+      // IT & COMPUTER SCIENCE
+      "webdev": {
+        title: "Full-Stack Web Developer (JS/React)",
+        category: "IT",
+        required: ["HTML/CSS", "JavaScript (ES6+)", "React.js", "Node.js & Express", "Git/GitHub", "REST APIs", "SQL / MySQL", "Data Structures & Algo"],
+        nice: ["TypeScript", "MongoDB", "Docker", "Next.js", "Tailwind CSS"],
+        jobs: [
+          { role: "Junior Full-Stack Dev", company: "Tech Mahindra / TCS", loc: "Ahmedabad", salary: "₹4.5 - ₹6.5 LPA", match: "High" },
+          { role: "Frontend React Developer", company: "ScaleGrid / Crest Data Systems", loc: "Vadodara", salary: "₹5.0 - ₹7.5 LPA", match: "High" },
+          { role: "Node.js Backend Engineer", company: "Simform", loc: "Ahmedabad", salary: "₹5.5 - ₹8.0 LPA", match: "Medium" },
+          { role: "Web Application Engineer", company: "Bacancy Technology", loc: "Surat", salary: "₹4.0 - ₹6.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Core Web Fundamentals & Git", desc: "Master HTML5 semantic elements, CSS Flexbox/Grid, version control with Git, and GitHub workflows." },
+          { month: "Month 2", title: "Advanced JavaScript & DOM", desc: "Deep dive into Async/Await, ES6+ features, Closures, Promises, and DOM manipulation." },
+          { month: "Month 3", title: "Frontend Framework (React.js)", desc: "Build SPA applications using React Hooks, State Management, and REST API consumption." },
+          { month: "Month 4", title: "Backend Development (Node/Express)", desc: "Create RESTful API microservices, authentication with JWT, and database interactions." },
+          { month: "Month 5", title: "Database Systems & Integration", desc: "Design relational schemas in MySQL/PostgreSQL and NoSQL collections in MongoDB." },
+          { month: "Month 6", title: "Full-Stack Deployment & Portfolio", desc: "Deploy apps on Vercel/AWS, build 3 full-stack projects, and prepare for GTU campus placement interviews." }
+        ],
+        resources: [
+          { name: "freeCodeCamp HTML & JS", type: "Interactive", url: "https://www.freecodecamp.org/", color: "teal", icon: "💻" },
+          { name: "JavaScript.info Modern Tutorial", type: "Docs", url: "https://javascript.info/", color: "blue", icon: "📖" },
+          { name: "React Official Documentation", type: "Docs", url: "https://react.dev/", color: "purple", icon: "⚛️" },
+          { name: "Traversy Media Node.js Crash Course", type: "YouTube", url: "https://www.youtube.com/", color: "amber", icon: "🎥" }
+        ]
+      },
+
+      "datascience": {
+        title: "Data Scientist / ML Engineer",
+        category: "IT",
+        required: ["Python", "SQL", "Pandas & NumPy", "Scikit-Learn", "Statistics & Linear Algebra", "Data Visualization (Matplotlib/Seaborn)", "Machine Learning Algorithms"],
+        nice: ["Deep Learning (TensorFlow/PyTorch)", "Big Data (PySpark)", "Tableau/PowerBI", "MLOps & Docker"],
+        jobs: [
+          { role: "Associate Data Analyst", company: "NielsenIQ", loc: "Vadodara", salary: "₹5.0 - ₹7.0 LPA", match: "High" },
+          { role: "Junior ML Engineer", company: "LTI Mindtree", loc: "GIFT City Ahmedabad", salary: "₹6.0 - ₹9.0 LPA", match: "Medium" },
+          { role: "Data Specialist", company: "Reliance Jio Tech", loc: "Surat", salary: "₹5.5 - ₹8.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Python Programming & Mathematics", desc: "Master Python data structures, vector math, linear algebra, and basic probability." },
+          { month: "Month 2", title: "Data Wrangling & Exploratory Analysis", desc: "Clean and analyze real-world datasets with Pandas, NumPy, and SQL queries." },
+          { month: "Month 3", title: "Supervised Machine Learning", desc: "Implement Regression, Classification, Decision Trees, and Random Forests using Scikit-Learn." },
+          { month: "Month 4", title: "Unsupervised Learning & Model Tuning", desc: "Master K-Means clustering, PCA dimension reduction, and Hyperparameter Optimization." },
+          { month: "Month 5", title: "Model Evaluation & Deployment", desc: "Build interactive dashboards using Streamlit and deploy ML APIs via FastAPI." }
+        ],
+        resources: [
+          { name: "Kaggle Learn Micro-Courses", type: "Practice", url: "https://www.kaggle.com/learn", color: "blue", icon: "📊" },
+          { name: "StatQuest Machine Learning", type: "YouTube", url: "https://www.youtube.com/", color: "coral", icon: "🎥" },
+          { name: "Scikit-Learn User Guide", type: "Docs", url: "https://scikit-learn.org/", color: "teal", icon: "🤖" }
+        ]
+      },
+
+      "android": {
+        title: "Android App Developer",
+        category: "IT",
+        required: ["Kotlin", "Android SDK", "Jetpack Compose", "REST API & Retrofit", "Git", "SQLite / Room DB"],
+        nice: ["Java", "Coroutines & Flow", "Firebase", "Unit Testing (JUnit)"],
+        jobs: [
+          { role: "Junior Android Developer", company: "TatvaSoft", loc: "Ahmedabad", salary: "₹4.0 - ₹6.5 LPA", match: "High" },
+          { role: "Mobile App Engineer", company: "Hidden Brains", loc: "Ahmedabad", salary: "₹4.5 - ₹7.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Kotlin Fundamentals", desc: "Learn object-oriented Kotlin, null safety, lambdas, and collection APIs." },
+          { month: "Month 2", title: "Android Studio & Jetpack Compose UI", desc: "Build responsive native mobile UI layouts using Jetpack Compose." },
+          { month: "Month 3", title: "API Integration & Local Storage", desc: "Fetch online data with Retrofit/Moshi and store local data in Room Database." },
+          { month: "Month 4", title: "Architecture (MVVM) & Play Store", desc: "Implement clean MVVM architecture, state handling, and publish apps to Play Store." }
+        ],
+        resources: [
+          { name: "Android Developers Official Courses", type: "Course", url: "https://developer.android.com/courses", color: "teal", icon: "🤖" },
+          { name: "Philipp Lackner YouTube", type: "YouTube", url: "https://www.youtube.com/", color: "purple", icon: "📱" }
+        ]
+      },
+
+      "devops": {
+        title: "DevOps & Cloud Engineer",
+        category: "IT",
+        required: ["Linux / Bash Shell", "Docker & Containerization", "Git", "AWS Core Services", "CI/CD Pipelines (GitHub Actions/Jenkins)", "Networking Basics"],
+        nice: ["Kubernetes", "Terraform / IaC", "Python Automation", "Prometheus & Grafana"],
+        jobs: [
+          { role: "Associate DevOps Engineer", company: "EInfochips (Arrow)", loc: "Ahmedabad", salary: "₹5.5 - ₹8.5 LPA", match: "High" },
+          { role: "Cloud Support Infrastructure Analyst", company: "L&T Technology Services", loc: "Vadodara", salary: "₹5.0 - ₹7.5 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Linux Administration & Scripting", desc: "Master Linux shell commands, permissions, SSH, and Bash automation scripts." },
+          { month: "Month 2", title: "Containerization with Docker", desc: "Build custom Docker images, write Dockerfiles, and compose multi-container stacks." },
+          { month: "Month 3", title: "Cloud Architecture (AWS)", desc: "Configure EC2, S3, VPC networking, IAM security, and RDS database instances." },
+          { month: "Month 4", title: "Automated CI/CD Pipelines", desc: "Build automated build, test, and release pipelines using GitHub Actions." }
+        ],
+        resources: [
+          { name: "KodeKloud DevOps Basics", type: "Interactive", url: "https://kodekloud.com/", color: "amber", icon: "☁️" },
+          { name: "TechWorld with Nana", type: "YouTube", url: "https://www.youtube.com/", color: "blue", icon: "🐳" }
+        ]
+      },
+
+      "uiux": {
+        title: "UI/UX Designer",
+        category: "IT",
+        required: ["Figma", "User Research & Personas", "Wireframing & Prototyping", "Design Systems & Typography", "Information Architecture", "Usability Testing"],
+        nice: ["HTML/CSS Knowledge", "Adobe XD / Illustrator", "Micro-interactions", "Design Handoff"],
+        jobs: [
+          { role: "Junior UI/UX Designer", company: "Simform Design Studio", loc: "Ahmedabad", salary: "₹4.0 - ₹6.0 LPA", match: "High" },
+          { role: "Product Designer", company: "Volansys Technologies", loc: "Ahmedabad", salary: "₹4.5 - ₹7.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "UI Foundations & Design Principles", desc: "Learn color theory, visual hierarchy, grid systems, and typography rules." },
+          { month: "Month 2", title: "Figma Masterclass & Components", desc: "Master Figma auto-layout, component variants, wireframing, and interactive prototypes." },
+          { month: "Month 3", title: "UX Research & User Journeys", desc: "Conduct user interviews, create personas, map empathy maps and user journey flows." },
+          { month: "Month 4", title: "Portfolio Case Studies", desc: "Complete 2 end-to-end design case studies and prepare design system handoffs." }
+        ],
+        resources: [
+          { name: "Figma YouTube Official Channel", type: "YouTube", url: "https://www.youtube.com/", color: "purple", icon: "🎨" },
+          { name: "Laws of UX Guide", type: "Docs", url: "https://lawsofux.com/", color: "teal", icon: "💡" }
+        ]
+      },
+
+      // MECHANICAL ENGINEERING
+      "cad-designer": {
+        title: "CAD & Product Design Engineer",
+        category: "Mechanical",
+        required: ["AutoCAD 2D/3D", "SolidWorks / Creo", "Engineering Drawing (GD&T)", "Material Selection", "Machine Design Principles", "Manufacturing Processes"],
+        nice: ["CATIA", "ANSYS FEA Analysis", "3D Printing / Rapid Prototyping", "DFM / DFA"],
+        jobs: [
+          { role: "Design Trainee Engineer", company: "L&T Heavy Engineering", loc: "Hazira Surat", salary: "₹4.2 - ₹6.5 LPA", match: "High" },
+          { role: "CAD Drafter & Designer", company: "Elecon Engineering", loc: "Anand / Vallabh Vidyanagar", salary: "₹3.8 - ₹5.5 LPA", match: "High" },
+          { role: "Product Design Specialist", company: "Schaeffler India", loc: "Vadodara", salary: "₹4.5 - ₹7.0 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Engineering Drawing & GD&T", desc: "Master geometric dimensioning & tolerancing, orthographic projections, and ISO standards." },
+          { month: "Month 2", title: "2D & 3D Drafting in AutoCAD", desc: "Create parametric 2D mechanical sketches, assembly drawings, and title block specs." },
+          { month: "Month 3", title: "3D Parametric Modeling (SolidWorks)", desc: "Build 3D mechanical components, sheet metal designs, and exploded assembly models." },
+          { month: "Month 4", title: "Design for Manufacturing (DFM)", desc: "Apply DFM/DFA guidelines for machining, casting, injection molding, and fabrication." }
+        ],
+        resources: [
+          { name: "SolidWorks Official Tutorials", type: "Docs", url: "https://my.solidworks.com/", color: "amber", icon: "📐" },
+          { name: "LearnCAD YouTube Channel", type: "YouTube", url: "https://www.youtube.com/", color: "blue", icon: "⚙️" }
+        ]
+      },
+
+      "production-eng": {
+        title: "Production & Manufacturing Engineer",
+        category: "Mechanical",
+        required: ["CNC Programming & Machining", "Quality Control & 7 QC Tools", "Lean Manufacturing & 5S", "Process Planning", "Supply Chain Basics", "Industrial Safety"],
+        nice: ["Six Sigma Green Belt", "ERP / SAP Production Module", "Kaizen & TPM", "Robotic Automation"],
+        jobs: [
+          { role: "Production Graduate Engineer Trainee", company: "MG Motor India", loc: "Halol Plant (Panchmahal)", salary: "₹4.5 - ₹6.8 LPA", match: "High" },
+          { role: "Manufacturing Quality Engineer", company: "Adani Wilmar Industrial", loc: "Mundra / Gandhidham", salary: "₹4.0 - ₹6.2 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Manufacturing Operations & Safety", desc: "Learn shop-floor safety, machining operations, casting, forging, and welding metallurgy." },
+          { month: "Month 2", title: "Quality Control & 7 QC Tools", desc: "Apply Pareto charts, Ishikawa fishbone diagrams, control charts, and CMM inspection." },
+          { month: "Month 3", title: "Lean Manufacturing & 5S Implementation", desc: "Implement Kaizen continuous improvement, Value Stream Mapping, and 5S workplace setup." },
+          { month: "Month 4", title: "CNC G-Code / M-Code Programming", desc: "Write G-code programs for CNC Lathe and VMC milling machines." }
+        ],
+        resources: [
+          { name: "NPTEL Manufacturing Technology", type: "Course", url: "https://nptel.ac.in/", color: "teal", icon: "🏭" },
+          { name: "Lean Enterprise Institute", type: "Docs", url: "https://www.lean.org/", color: "amber", icon: "📈" }
+        ]
+      },
+
+      "auto-eng": {
+        title: "Automobile Engineer",
+        category: "Mechanical",
+        required: ["Automotive Chassis & Powertrain", "Internal Combustion Engines / EV Tech", "Vehicle Dynamics", "AutoCAD / SolidWorks", "Thermodynamics"],
+        nice: ["MATLAB / Simulink", "Battery Management Systems (BMS)", "Hybrid Electric Vehicles (HEV)", "ANSYS CFD"],
+        jobs: [
+          { role: "EV Systems Trainee", company: "Tata Motors Commercial Vehicles", loc: "Sanand Plant Ahmedabad", salary: "₹5.0 - ₹7.5 LPA", match: "High" },
+          { role: "Automobile Design Engineer", company: "Hero MotoCorp R&D", loc: "Vadodara", salary: "₹4.8 - ₹7.2 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Vehicle Subsystems & Powertrains", desc: "Study transmission systems, braking, suspension geometry, and steering mechanisms." },
+          { month: "Month 2", title: "Electric Vehicle (EV) Fundamentals", desc: "Understand Lithium-ion battery chemistry, BMS protection circuits, and BLDC motors." },
+          { month: "Month 3", title: "Automotive Simulation (MATLAB/Simulink)", desc: "Model vehicle acceleration dynamics, battery state of charge, and regenerative braking." }
+        ],
+        resources: [
+          { name: "NPTEL Electric Vehicles Course", type: "Course", url: "https://nptel.ac.in/", color: "teal", icon: "🚗" }
+        ]
+      },
+
+      // CIVIL ENGINEERING
+      "structural-eng": {
+        title: "Structural Engineer",
+        category: "Civil",
+        required: ["STAAD.Pro / ETABS", "AutoCAD Civil", "RCC & Steel Design (IS 456 & IS 800)", "Structural Analysis", "Building Codes & Specifications", "Concrete Technology"],
+        nice: ["Revit Structure (BIM)", "SAFE Foundation Design", "Earthquake Engineering (IS 1893)", "Quantity Surveying"],
+        jobs: [
+          { role: "Junior Structural Engineer", company: "GIFT City Infrastructure Dev", loc: "Gandhinagar", salary: "₹4.2 - ₹6.5 LPA", match: "High" },
+          { role: "Structural Detailing Engineer", company: "L&T Construction (ECC)", loc: "Ahmedabad", salary: "₹4.5 - ₹7.0 LPA", match: "High" },
+          { role: "Design Engineer Trainee", company: "Gammon India Consultancy", loc: "Vadodara", salary: "₹3.8 - ₹5.8 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Indian Standards (IS Codes) & RCC Design", desc: "Master IS 456RCC design for beams, slabs, columns, and IS 800 steel design limits." },
+          { month: "Month 2", title: "Computer Aided Analysis (STAAD.Pro)", desc: "Model multi-story frame structures, apply dead/live loads, wind loads, and shear forces." },
+          { month: "Month 3", title: "ETABS & Seismic Analysis (IS 1893)", desc: "Perform equivalent static seismic analysis and dynamic response spectrum analysis." },
+          { month: "Month 4", title: "BIM Integration with Revit", desc: "Create 3D structural BIM models and extract reinforcement schedule quantities." }
+        ],
+        resources: [
+          { name: "NPTEL Structural Analysis", type: "Course", url: "https://nptel.ac.in/", color: "blue", icon: "🏢" },
+          { name: "Bentley STAAD.Pro Learn", type: "Docs", url: "https://www.bentley.com/", color: "teal", icon: "🏗️" }
+        ]
+      },
+
+      "construction-eng": {
+        title: "Site & Construction Engineer",
+        category: "Civil",
+        required: ["Site Supervision & Quality Check", "AutoCAD Civil", "Estimation & Quantity Surveying (BOQ)", "Surveying (Total Station)", "Safety Management (HSE)", "Concrete Testing"],
+        nice: ["MS Project / Primavera P6", "Contract Management (FIDIC)", "Bar Bending Schedule (BBS)", "BIM Basics"],
+        jobs: [
+          { role: "Site Engineer Trainee", company: "Adani Infra & Realty", loc: "Ahmedabad / Mundra", salary: "₹4.0 - ₹6.0 LPA", match: "High" },
+          { role: "Construction Supervisor", company: "GSRTC Bus Terminal Projects", loc: "Surat / Rajkot", salary: "₹3.5 - ₹5.2 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Surveying & Leveling Instruments", desc: "Operate Total Station, Auto Level, and perform contour mapping and alignment layout." },
+          { month: "Month 2", title: "Estimation, BOQ & Bar Bending Schedule", desc: "Calculate concrete volumes, brickwork quantities, steel BBS weight schedules, and BOQ." },
+          { month: "Month 3", title: "Quality Control & Field Testing", desc: "Perform slump test, cube strength test, compaction test, and soil bearing tests." }
+        ],
+        resources: [
+          { name: "Civil Engineering Academy", type: "YouTube", url: "https://www.youtube.com/", color: "amber", icon: "👷‍♂️" }
+        ]
+      },
+
+      "urban-planner": {
+        title: "Urban Planner & Surveyor",
+        category: "Civil",
+        required: ["ArcGIS / QGIS", "AutoCAD Civil 3D", "Urban Development Regulations (GDCR)", "Surveying & Remote Sensing", "Town Planning Rules", "Traffic & Transport Planning"],
+        nice: ["Python for GIS", "Drone Surveying & Photogrammetry", "Smart City Infrastructure", "Environmental Impact Assessment"],
+        jobs: [
+          { role: "Assistant Town Planner", company: "Ahmedabad Urban Dev Authority (AUDA)", loc: "Ahmedabad", salary: "₹4.5 - ₹6.8 LPA", match: "High" },
+          { role: "GIS Analyst Trainee", company: "SUDA (Surat Urban Dev)", loc: "Surat", salary: "₹4.0 - ₹6.2 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "QGIS Fundamentals & Spatial Data", desc: "Learn vector/raster spatial data, georeferencing, digitized mapping, and attribute tables." },
+          { month: "Month 2", title: "Gujarat GDCR & Town Planning Schemes", desc: "Study FSI regulations, setback rules, zoning laws, and TPS development plans." }
+        ],
+        resources: [
+          { name: "QGIS Official Documentation", type: "Docs", url: "https://www.qgis.org/", color: "teal", icon: "🗺️" }
+        ]
+      },
+
+      // ELECTRICAL & ELECTRONICS
+      "electrical-eng": {
+        title: "Electrical Power Systems Engineer",
+        category: "Electrical/EC",
+        required: ["Power Systems & Switchgear", "Electrical AutoCAD / Single Line Diagrams", "MATLAB / Simulink", "PLC Programming (Ladder Logic)", "Electrical Machines & Drives", "Safety & Earthing Standards"],
+        nice: ["ETAP Power Analysis", "SCADA Systems", "Substation Automation (IEC 61850)", "Solar PV Design"],
+        jobs: [
+          { role: "Electrical GET", company: "Torrent Power Ltd", loc: "Ahmedabad / Surat", salary: "₹4.5 - ₹7.0 LPA", match: "High" },
+          { role: "Power System Substation Engineer", company: "GETCO (Gujarat Energy Transmission)", loc: "Vadodara / Rajkot", salary: "₹4.8 - ₹7.2 LPA", match: "High" },
+          { role: "Solar Electrical Engineer", company: "Adani Solar / Waree Energy", loc: "Kutch / Surat", salary: "₹4.0 - ₹6.5 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Single Line Diagrams & AutoCAD Electrical", desc: "Draft control panel schematics, single line diagrams (SLD), and cable tray layouts." },
+          { month: "Month 2", title: "Protection Relays & Switchgear", desc: "Understand circuit breakers, transformers, CT/PT ratios, and overcurrent protection." },
+          { month: "Month 3", title: "Industrial Automation (PLC & SCADA)", desc: "Program Siemens / Allen-Bradley PLCs using Ladder Logic and build SCADA HMIs." },
+          { month: "Month 4", title: "Power System Simulation (MATLAB/ETAP)", desc: "Perform load flow analysis, short circuit calculations, and arc flash assessments." }
+        ],
+        resources: [
+          { name: "NPTEL Power System Engineering", type: "Course", url: "https://nptel.ac.in/", color: "blue", icon: "⚡" },
+          { name: "PLC Academy Tutorials", type: "Interactive", url: "https://www.plcacademy.com/", color: "teal", icon: "🔌" }
+        ]
+      },
+
+      "embedded-sys": {
+        title: "Embedded Systems Engineer",
+        category: "Electrical/EC",
+        required: ["Embedded C / C++", "Microcontrollers (ARM Cortex / STM32 / ESP32)", "Communication Protocols (UART, SPI, I2C, CAN)", "RTOS Concepts (FreeRTOS)", "Circuit Design & PCB (KiCAD / Altium)", "Oscilloscope & Debugging"],
+        nice: ["Embedded Linux", "IoT Protocols (MQTT, HTTP)", "Firmware Testing", "Bluetooth Low Energy (BLE)"],
+        jobs: [
+          { role: "Junior Firmware Engineer", company: "eInfochips (Arrow Company)", loc: "Ahmedabad", salary: "₹5.0 - ₹8.0 LPA", match: "High" },
+          { role: "Embedded Hardware Trainee", company: "Volansys Technologies", loc: "Ahmedabad", salary: "₹4.5 - ₹7.0 LPA", match: "High" },
+          { role: "IoT Device Developer", company: "Matrix Comsec", loc: "Vadodara", salary: "₹4.2 - ₹6.8 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Embedded C & Microcontroller Peripherals", desc: "Master C pointers, bitwise operations, GPIO control, timers, and interrupts on STM32." },
+          { month: "Month 2", title: "Hardware Serial Protocols", desc: "Interface sensors and displays using I2C, SPI, UART, and Automotive CAN bus." },
+          { month: "Month 3", title: "Real-Time Operating Systems (FreeRTOS)", desc: "Implement multi-tasking, semaphores, message queues, and task scheduling." },
+          { month: "Month 4", title: "PCB Schematic & Layout in KiCAD", desc: "Design 2-layer PCBs, route high-speed tracks, generate Gerber files for manufacturing." }
+        ],
+        resources: [
+          { name: "Quantum Leaps Modern Embedded C", type: "YouTube", url: "https://www.youtube.com/", color: "purple", icon: "📟" },
+          { name: "FastBit Embedded Brain Academy", type: "Course", url: "https://fastbitlab.com/", color: "blue", icon: "💾" }
+        ]
+      },
+
+      "vlsi-design": {
+        title: "VLSI & Chip Design Engineer",
+        category: "Electrical/EC",
+        required: ["Verilog HDL / SystemVerilog", "Digital Electronics & Logic Design", "CMOS Fundamentals", "FPGA Prototyping (Xilinx / Vivado)", "Static Timing Analysis (STA)", "EDA Tools"],
+        nice: ["UVM Verification", "ASIC Synthesis", "Scripting (Tcl / Perl / Python)", "DFT (Design for Testability)"],
+        jobs: [
+          { role: "RTL Design Engineer Trainee", company: "eInfochips VLSI Center", loc: "Ahmedabad", salary: "₹6.0 - ₹9.5 LPA", match: "High" },
+          { role: "VLSI Verification Engineer", company: "Maven Silicon Partner Studio", loc: "Ahmedabad / Remote", salary: "₹5.5 - ₹8.5 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Digital Logic Design & Combinational Circuits", desc: "Master Boolean algebra, FSM finite state machines, setup/hold times, and flip-flops." },
+          { month: "Month 2", title: "RTL Coding in Verilog HDL", desc: "Write synthesizable Verilog for ALUs, FIFOs, counters, and memory controllers." },
+          { month: "Month 3", title: "FPGA Synthesis & Vivado", desc: "Synthesize and test digital designs on Xilinx Artix-7 / Spartan FPGA boards." }
+        ],
+        resources: [
+          { name: "NPTEL VLSI Design Course", type: "Course", url: "https://nptel.ac.in/", color: "coral", icon: "🔌" }
+        ]
+      },
+
+      // COMMERCE & MANAGEMENT
+      "accountant": {
+        title: "Financial Accountant & Tax Analyst",
+        category: "Commerce",
+        required: ["Tally Prime / ERP 9", "GST Compliance & Filing", "Income Tax & TDS Rules", "Financial Accounting Principles", "Advanced MS Excel (VLOOKUP, Pivot Tables)", "Financial Statements (P&L, Balance Sheet)"],
+        nice: ["SAP FICO Module", "QuickBooks", "Auditing Standards", "Corporate Finance Basics"],
+        jobs: [
+          { role: "Junior Accountant", company: "Adani Ports & SEZ Corporate", loc: "Ahmedabad", salary: "₹3.5 - ₹5.5 LPA", match: "High" },
+          { role: "GST & Accounts Executive", company: "Deepak Nitrite Ltd", loc: "Vadodara", salary: "₹3.8 - ₹5.8 LPA", match: "High" },
+          { role: "Taxation Specialist", company: "KPMG Global Delivery", loc: "Ahmedabad", salary: "₹4.5 - ₹7.0 LPA", match: "Medium" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Accounting Fundamentals & Tally Prime", desc: "Master double-entry bookkeeping, voucher entries, ledger posting, and trial balance." },
+          { month: "Month 2", title: "GST Laws, Calculation & E-Filing", desc: "Understand IGST/CGST/SGST, input tax credit (ITC) reconciliation, and GSTR-1/3B filing." },
+          { month: "Month 3", title: "Advanced Excel for Finance", desc: "Master Pivot Tables, VLOOKUP/XLOOKUP, financial modeling formulas, and audit macros." },
+          { month: "Month 4", title: "Income Tax, TDS & Financial Reporting", desc: "Calculate TDS deductions, corporate tax liabilities, and construct Balance Sheets." }
+        ],
+        resources: [
+          { name: "ICAI E-Learning Portal", type: "Docs", url: "https://www.icai.org/", color: "teal", icon: "📊" },
+          { name: "CA Rachana Ranade YouTube", type: "YouTube", url: "https://www.youtube.com/", color: "amber", icon: "🎥" }
+        ]
+      },
+
+      "digital-marketing": {
+        title: "Digital Marketing Specialist",
+        category: "Commerce",
+        required: ["Search Engine Optimization (SEO)", "Google Ads (PPC)", "Social Media Marketing (Meta Ads)", "Content Writing & Strategy", "Google Analytics 4 (GA4)", "Canva / Basic Graphic Design"],
+        nice: ["Email Marketing (Mailchimp)", "WordPress CMS", "Copywriting", "Affiliate & Influencer Marketing"],
+        jobs: [
+          { role: "Digital Marketing Executive", company: "Shree Rama Multi-Tech", loc: "Ahmedabad", salary: "₹3.5 - ₹5.0 LPA", match: "High" },
+          { role: "SEO & Growth Associate", company: "Infibeam Avenues", loc: "GIFT City Gandhinagar", salary: "₹4.0 - ₹6.2 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "SEO On-Page & Off-Page Fundamentals", desc: "Conduct keyword research, optimize meta tags, build backlinks, and fix technical SEO." },
+          { month: "Month 2", title: "Social Media Advertising (Meta & LinkedIn)", desc: "Build targeted ad campaigns, custom audiences, retargeting pixels, and A/B test creatives." },
+          { month: "Month 3", title: "Google Search Ads & GA4 Analytics", desc: "Set up Google Search & Display campaigns, track conversions, and analyze GA4 user funnels." }
+        ],
+        resources: [
+          { name: "Google Digital Unlocked Certification", type: "Course", url: "https://skillshop.exceedlms.com/", color: "blue", icon: "🎓" }
+        ]
+      },
+
+      "business-analyst": {
+        title: "Business & Data Analyst",
+        category: "Commerce",
+        required: ["Advanced Excel & VBA", "SQL Database Queries", "Power BI / Tableau", "Business Requirement Docs (BRD/FRD)", "Process Mapping & Flowcharts", "Data Cleaning"],
+        nice: ["Python for Business Analytics", "Agile / Scrum Framework", "JIRA", "Statistical Forecasting"],
+        jobs: [
+          { role: "Junior Business Analyst", company: "Torrent Pharmaceuticals Corporate", loc: "Ahmedabad", salary: "₹5.0 - ₹7.5 LPA", match: "High" },
+          { role: "Data Visualization Specialist", company: "Alembic Pharma", loc: "Vadodara", salary: "₹4.8 - ₹7.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Business Analysis & Requirement Gathering", desc: "Learn BRD creation, stakeholder interviews, gap analysis, and BPMN process modeling." },
+          { month: "Month 2", title: "SQL for Business Intelligence", desc: "Write complex SQL joins, aggregations, subqueries, and window functions." },
+          { month: "Month 3", title: "Power BI Interactive Dashboards", desc: "Connect data sources, write DAX formulas, and design executive KPI dashboards." }
+        ],
+        resources: [
+          { name: "Microsoft Power BI Official Training", type: "Course", url: "https://learn.microsoft.com/", color: "amber", icon: "📊" }
+        ]
+      },
+
+      "entrepreneur": {
+        title: "Business Manager / Entrepreneur",
+        category: "Commerce",
+        required: ["Business Model Canvas (BMC)", "Financial Planning & Cashflow", "Market Research & Validation", "Sales & Negotiation", "Team Leadership & Operations", "Pitch Deck Creation"],
+        nice: ["Digital Marketing Basics", "Legal Compliance & Startup India Registration", "Fundraising & Valuation", "Supply Chain Management"],
+        jobs: [
+          { role: "Management Trainee", company: "Zydus Lifesciences", loc: "Ahmedabad", salary: "₹5.5 - ₹8.0 LPA", match: "High" },
+          { role: "Operations Lead", company: "Gujarat State Startup Cell Incubator", loc: "Gandhinagar / iHub", salary: "₹4.5 - ₹7.0 LPA", match: "High" }
+        ],
+        roadmap: [
+          { month: "Month 1", title: "Idea Validation & Business Model Canvas", desc: "Validate customer pain points, build Value Proposition Canvas, and map revenue models." },
+          { month: "Month 2", title: "Financial Projections & Cashflow Management", desc: "Project 3-year P&L, calculate unit economics, CAC/LTV, and breakeven point." },
+          { month: "Month 3", title: "Sales Execution & Pitching to Investors", desc: "Master B2B/B2C sales funnels, draft investor pitch decks, and present at iHub GTU incubators." }
+        ],
+        resources: [
+          { name: "Startup India Learning Program", type: "Course", url: "https://www.startupindia.gov.in/", color: "teal", icon: "🚀" }
+        ]
+      }
+    };
+
+    /* User Selected Skills State */
+    let currentSelectedSkills = new Set();
+    let currentCareerId = "";
+
+    /* ==========================================
+       2. INITIALIZATION & THEME LOGIC
+       ========================================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check Theme Preference
+      const savedTheme = localStorage.getItem("skillbridge_theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        updateThemeUI(savedTheme);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        updateThemeUI("dark");
+      }
+    });
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      const next = current === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("skillbridge_theme", next);
+      updateThemeUI(next);
+    }
+
+    function updateThemeUI(theme) {
+      const icon = document.getElementById("themeIcon");
+      const text = document.getElementById("themeText");
+      if (theme === "dark") {
+        icon.textContent = "☀️";
+        text.textContent = "Light";
+      } else {
+        icon.textContent = "🌙";
+        text.textContent = "Dark";
+      }
+    }
+
+    /* ==========================================
+       3. CAREER SELECTION & SKILLS GENERATOR
+       ========================================== */
+    function onCareerChange() {
+      const select = document.getElementById("targetCareer");
+      currentCareerId = select.value;
+      currentSelectedSkills.clear();
+
+      const skillsGrid = document.getElementById("skillsGrid");
+      skillsGrid.innerHTML = "";
+
+      if (!currentCareerId || !CAREER_DATA[currentCareerId]) {
+        skillsGrid.innerHTML = `
+          <div class="placeholder-box">
+            🎯 Select your <strong>Target Career Path</strong> above to generate required & nice-to-have skill checkboxes.
+          </div>
+        `;
+        updateSelectedCount();
+        return;
+      }
+
+      const data = CAREER_DATA[currentCareerId];
+
+      // Required Skills
+      data.required.forEach(skill => {
+        const chip = createSkillChip(skill, "Required");
+        skillsGrid.appendChild(chip);
+      });
+
+      // Nice-to-Have Skills
+      data.nice.forEach(skill => {
+        const chip = createSkillChip(skill, "Nice-to-Have");
+        skillsGrid.appendChild(chip);
+      });
+
+      // Update stepper
+      document.getElementById("step1Indicator").classList.add("completed");
+      document.getElementById("step2Indicator").classList.add("active");
+
+      updateSelectedCount();
+    }
+
+    function createSkillChip(skillName, type) {
+      const chip = document.createElement("div");
+      chip.className = "skill-chip";
+      chip.dataset.skill = skillName;
+      chip.dataset.type = type;
+
+      const isReq = type === "Required";
+
+      chip.innerHTML = `
+        <span class="dot-indicator"></span>
+        <span>${skillName}</span>
+        <span class="chip-type-tag" style="color: ${isReq ? 'var(--coral-600)' : 'var(--blue-600)'}">
+          ${isReq ? '★ Must' : '☆ Nice'}
+        </span>
+      `;
+
+      chip.addEventListener("click", () => {
+        if (currentSelectedSkills.has(skillName)) {
+          currentSelectedSkills.delete(skillName);
+          chip.classList.remove("selected");
+        } else {
+          currentSelectedSkills.add(skillName);
+          chip.classList.add("selected");
+        }
+        updateSelectedCount();
+      });
+
+      return chip;
+    }
+
+    function updateSelectedCount() {
+      const badge = document.getElementById("selectedCountBadge");
+      badge.textContent = `${currentSelectedSkills.size} Selected`;
+    }
+
+    /* ==========================================
+       4. SCORING & ANALYSIS ENGINE
+       ========================================== */
+    function runAnalysis() {
+      if (!currentCareerId || !CAREER_DATA[currentCareerId]) {
+        alert("Please select a Target Career Path first!");
+        return;
+      }
+
+      const data = CAREER_DATA[currentCareerId];
+      const requiredSkills = data.required;
+      const niceSkills = data.nice;
+
+      let haveReqCount = 0;
+      requiredSkills.forEach(s => {
+        if (currentSelectedSkills.has(s)) haveReqCount++;
+      });
+
+      let haveNiceCount = 0;
+      niceSkills.forEach(s => {
+        if (currentSelectedSkills.has(s)) haveNiceCount++;
+      });
+
+      // Weighted Calculation Logic:
+      // Required skills account for 80% weight, Nice-to-have account for 20%
+      const reqWeight = requiredSkills.length > 0 ? (haveReqCount / requiredSkills.length) * 80 : 0;
+      const niceWeight = niceSkills.length > 0 ? (haveNiceCount / niceSkills.length) * 20 : 20;
+
+      const totalScore = Math.min(100, Math.round(reqWeight + niceWeight));
+
+      // Reveal Results Section
+      const resultsSection = document.getElementById("results");
+      resultsSection.classList.add("active");
+
+      // Update Stepper
+      document.getElementById("step2Indicator").classList.add("completed");
+      document.getElementById("step3Indicator").classList.add("active");
+
+      // Scroll to Results
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+      // Render Score & Header Card
+      document.getElementById("scoreTargetCareerTitle").textContent = data.title;
+      animateScore(totalScore);
+      renderScoreFeedback(totalScore, haveReqCount, requiredSkills.length);
+
+      // Render Tab 1: Skill Analysis
+      renderSkillAnalysisTab(data, requiredSkills, niceSkills);
+
+      // Render Tab 2: Learning Roadmap
+      renderRoadmapTab(data);
+
+      // Render Tab 3: Job Market Table
+      renderJobsTab(data);
+
+      // Render Tab 4: Free Resources Grid
+      renderResourcesTab(data);
+    }
+
+    function animateScore(targetScore) {
+      const progressBar = document.getElementById("progressBarInner");
+      const scoreNum = document.getElementById("scorePercentageNum");
+
+      // Reset
+      progressBar.style.width = "0%";
+      scoreNum.textContent = "0%";
+
+      setTimeout(() => {
+        progressBar.style.width = targetScore + "%";
+      }, 100);
+
+      // Count up animation
+      let current = 0;
+      const duration = 1000;
+      const stepTime = 20;
+      const steps = duration / stepTime;
+      const increment = targetScore / steps;
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= targetScore) {
+          current = targetScore;
+          clearInterval(timer);
+        }
+        scoreNum.textContent = Math.round(current) + "%";
+      }, stepTime);
+    }
+
+    function renderScoreFeedback(score, haveReq, totalReq) {
+      const headline = document.getElementById("scoreHeadline");
+      const feedback = document.getElementById("scoreFeedbackText");
+
+      if (score >= 80) {
+        headline.textContent = "🚀 Excellent Job Readiness!";
+        feedback.textContent = `You possess ${haveReq}/${totalReq} essential required skills. You are well-positioned for placement drives and entry-level engineering/commerce roles!`;
+      } else if (score >= 50) {
+        headline.textContent = "📈 Moderate Job Readiness (Good Foundation)";
+        feedback.textContent = `You have ${haveReq}/${totalReq} core skills. With 2–3 months of focused learning using our roadmap below, you can bridge key missing skills.`;
+      } else {
+        headline.textContent = "🎯 Early Stage — High Gap Identified";
+        feedback.textContent = `You currently have ${haveReq}/${totalReq} required skills for this role. Follow the month-by-month learning roadmap and free resources below to build strong foundations!`;
+      }
+    }
+
+    /* ==========================================
+       5. TAB RENDERING FUNCTIONS
+       ========================================== */
+    function switchTab(tabId, btnElement) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+
+      btnElement.classList.add("active");
+      document.getElementById(tabId).classList.add("active");
+    }
+
+    // Tab 1: Skill Analysis
+    function renderSkillAnalysisTab(data, requiredSkills, niceSkills) {
+      const reqList = document.getElementById("requiredSkillsList");
+      const niceList = document.getElementById("niceSkillsList");
+
+      reqList.innerHTML = "";
+      niceList.innerHTML = "";
+
+      let reqHaveCount = 0;
+      requiredSkills.forEach(skill => {
+        const have = currentSelectedSkills.has(skill);
+        if (have) reqHaveCount++;
+
+        const row = document.createElement("div");
+        row.className = "skill-item-row";
+        row.innerHTML = `
+          <div class="skill-item-left">
+            <span class="status-dot ${have ? 'have' : 'missing'}"></span>
+            <span>${skill}</span>
+          </div>
+          <span class="badge ${have ? 'badge-teal' : 'badge-coral'}">
+            ${have ? '✓ Done' : '★ High Priority'}
+          </span>
+        `;
+        reqList.appendChild(row);
+      });
+
+      let niceHaveCount = 0;
+      niceSkills.forEach(skill => {
+        const have = currentSelectedSkills.has(skill);
+        if (have) niceHaveCount++;
+
+        const row = document.createElement("div");
+        row.className = "skill-item-row";
+        row.innerHTML = `
+          <div class="skill-item-left">
+            <span class="status-dot ${have ? 'have' : 'missing'}"></span>
+            <span>${skill}</span>
+          </div>
+          <span class="badge ${have ? 'badge-teal' : 'badge-blue'}">
+            ${have ? '✓ Done' : '☆ Bonus'}
+          </span>
+        `;
+        niceList.appendChild(row);
+      });
+
+      document.getElementById("reqRatioBadge").textContent = `${reqHaveCount}/${requiredSkills.length}`;
+      document.getElementById("niceRatioBadge").textContent = `${niceHaveCount}/${niceSkills.length}`;
+    }
+
+    // Tab 2: Roadmap
+    function renderRoadmapTab(data) {
+      const timeline = document.getElementById("roadmapTimeline");
+      timeline.innerHTML = "";
+      document.getElementById("aiRoadmapBox").innerHTML = "";
+
+      data.roadmap.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "timeline-item";
+        div.innerHTML = `
+          <div class="timeline-dot"></div>
+          <div class="timeline-month">${item.month}</div>
+          <h4 class="timeline-title">${item.title}</h4>
+          <p class="timeline-desc">${item.desc}</p>
+        `;
+        timeline.appendChild(div);
+      });
+    }
+
+    // Tab 3: Jobs
+    function renderJobsTab(data) {
+      const tbody = document.getElementById("jobsTableBody");
+      tbody.innerHTML = "";
+      document.getElementById("aiJobsContainer").innerHTML = "";
+
+      data.jobs.forEach(job => {
+        const tr = document.createElement("tr");
+        const matchBadgeClass = job.match === "High" ? "badge-teal" : (job.match === "Medium" ? "badge-amber" : "badge-coral");
+
+        tr.innerHTML = `
+          <td><strong>${job.role}</strong></td>
+          <td>${job.company}</td>
+          <td>📍 ${job.loc}</td>
+          <td><strong>${job.salary}</strong></td>
+          <td><span class="badge ${matchBadgeClass}">${job.match} Match</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Tab 4: Free Resources
+    function renderResourcesTab(data) {
+      const grid = document.getElementById("staticResourcesGrid");
+      grid.innerHTML = "";
+      document.getElementById("aiResourcesContainer").innerHTML = "";
+
+      data.resources.forEach(res => {
+        const badgeClass = res.color ? `badge-${res.color}` : "badge-blue";
+        const card = document.createElement("a");
+        card.href = res.url;
+        card.target = "_blank";
+        card.className = "resource-card";
+        card.innerHTML = `
+          <div class="resource-header">
+            <span class="resource-icon">${res.icon || '📚'}</span>
+            <span class="badge ${badgeClass}">${res.type}</span>
+          </div>
+          <h4 style="font-size: 1rem; color: var(--text);">${res.name}</h4>
+          <span style="font-size: 0.8rem; color: var(--accent);">Access Resource ↗</span>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function resetForm() {
+      currentSelectedSkills.clear();
+      document.getElementById("targetCareer").value = "";
+      currentCareerId = "";
+      document.getElementById("skillsGrid").innerHTML = `
+        <div class="placeholder-box">
+          🎯 Select your <strong>Target Career Path</strong> above to generate required & nice-to-have skill checkboxes.
+        </div>
+      `;
+      document.getElementById("selectedCountBadge").textContent = "0 Selected";
+      document.getElementById("results").classList.remove("active");
+
+      document.getElementById("step1Indicator").className = "step-item active";
+      document.getElementById("step2Indicator").className = "step-item";
+      document.getElementById("step3Indicator").className = "step-item";
+
+      document.getElementById("analyzer").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* ==========================================
+       6. SECURE HOST BACKEND GEMINI INTEGRATION
+       ========================================== */
+    async function callGemini(prompt) {
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status} Error`);
+      }
+
+      const data = await response.json();
+      if (!data.text) {
+        throw new Error('Empty response received from server.');
+      }
+      return data.text;
+    }
+
+    function parseJSON(text) {
+      // Strip markdown ```json ... ``` blocks
+      let cleanText = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+      return JSON.parse(cleanText);
+    }
+
+    // AI Feature 1: AI Roadmap Expansion
+    async function findAIRoadmap() {
+      const btn = document.getElementById("aiRoadmapBtn");
+      const box = document.getElementById("aiRoadmapBox");
+
+      if (!currentCareerId || !CAREER_DATA[currentCareerId]) {
+        alert("Please analyze a career path first!");
+        return;
+      }
+
+      const data = CAREER_DATA[currentCareerId];
+      const missingSkills = data.required.concat(data.nice).filter(s => !currentSelectedSkills.has(s));
+
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner"></div> Generating AI Roadmap...`;
+
+      const prompt = `You are a tech career counselor for engineering/commerce students in Gujarat India.
+Target Career: "${data.title}"
+Student's Missing Skills: ${JSON.stringify(missingSkills)}
+
+Generate 4 additional advanced month milestones (e.g. Month 7 to Month 10) specifically to master these missing skills.
+Return ONLY raw valid JSON array of objects with keys: "month", "title", "desc", "recommendedResource". Do NOT include markdown fences.`;
+
+      try {
+        const rawText = await callGemini(prompt);
+        const milestones = parseJSON(rawText);
+
+        let html = `
+          <h4 style="margin: 1.5rem 0 1rem 0; color: var(--purple-600); display: flex; align-items: center; gap: 0.5rem;">
+            🤖 AI Recommended Advanced Milestones
+          </h4>
+          <div class="timeline" style="border-left: 2px dashed var(--purple-600);">
+        `;
+
+        milestones.forEach(m => {
+          html += `
+            <div class="timeline-item">
+              <div class="timeline-dot" style="border-color: var(--purple-600);"></div>
+              <div class="timeline-month" style="color: var(--purple-600);">${m.month}</div>
+              <h4 class="timeline-title">${m.title}</h4>
+              <p class="timeline-desc">${m.desc}</p>
+              ${m.recommendedResource ? `<span style="font-size:0.8rem; color:var(--accent); font-weight:600;">Resource: ${m.recommendedResource}</span>` : ''}
+            </div>
+          `;
+        });
+        html += `</div>`;
+
+        box.innerHTML = html;
+      } catch (err) {
+        box.innerHTML = `
+          <div class="alert-box alert-error">
+            ❌ <strong>AI Server Error:</strong> ${err.message || 'Failed to communicate with host server.'}
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `🤖 Enhance with AI`;
+      }
+    }
+
+    // AI Feature 2: AI Job Finder
+    async function findAIJobs() {
+      const btn = document.getElementById("aiJobBtn");
+      const container = document.getElementById("aiJobsContainer");
+      const city = document.getElementById("aiJobCity").value.trim() || "Gujarat (Ahmedabad/Vadodara/Surat)";
+      const pref = document.getElementById("aiJobPref").value.trim() || "Entry-level engineering roles";
+
+      if (!currentCareerId || !CAREER_DATA[currentCareerId]) {
+        alert("Please analyze a career path first!");
+        return;
+      }
+
+      const data = CAREER_DATA[currentCareerId];
+
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner"></div> Finding Jobs...`;
+
+      const missingSkills = data.required.filter(s => !currentSelectedSkills.has(s));
+
+      const prompt = `You are a recruiter finding real jobs in India (specifically Gujarat tech hubs like Ahmedabad, Vadodara, Surat, GIFT City, and GIDC).
+Target Role: "${data.title}"
+Preferred City/Region: "${city}"
+Preferences: "${pref}"
+Student's Missing Skills: ${JSON.stringify(missingSkills)}
+
+Generate 4 realistic job listings. Return ONLY a raw valid JSON array of objects with keys: "role", "company", "location", "salary", "match", "neededSkills", "applyTip". Do NOT wrap in markdown fences.`;
+
+      try {
+        const rawText = await callGemini(prompt);
+        const jobs = parseJSON(rawText);
+
+        let html = `<div class="job-cards-grid">`;
+        jobs.forEach(j => {
+          const matchBadge = j.match === "High" ? "badge-teal" : "badge-amber";
+          html += `
+            <div class="job-card">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                  <h4 style="font-size:1.05rem;">${j.role}</h4>
+                  <span class="badge ${matchBadge}">${j.match || 'High'} Match</span>
+                </div>
+                <div style="font-size:0.875rem; color:var(--text-muted); margin-top:0.25rem;">
+                  🏢 <strong>${j.company}</strong> • 📍 ${j.location}
+                </div>
+                <div style="font-size:0.95rem; font-weight:700; color:var(--accent); margin:0.5rem 0;">
+                  💰 ${j.salary}
+                </div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">
+                  <strong>Skills Needed:</strong> ${Array.isArray(j.neededSkills) ? j.neededSkills.join(", ") : j.neededSkills}
+                </div>
+              </div>
+              <div style="font-size:0.775rem; background:var(--card-subtle); padding:0.5rem; border-radius:6px; border:1px solid var(--border);">
+                💡 <strong>Apply Tip:</strong> ${j.applyTip}
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `
+          <div class="alert-box alert-error">
+            ❌ <strong>AI Server Error:</strong> ${err.message || 'Failed to fetch job matches from host server.'}
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Find AI Jobs`;
+      }
+    }
+
+    // AI Feature 3: AI Resource Finder
+    async function findAIResources() {
+      const btn = document.getElementById("aiResourceBtn");
+      const container = document.getElementById("aiResourcesContainer");
+
+      if (!currentCareerId || !CAREER_DATA[currentCareerId]) {
+        alert("Please analyze a career path first!");
+        return;
+      }
+
+      const data = CAREER_DATA[currentCareerId];
+
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner"></div> Finding Resources...`;
+
+      const missingSkills = data.required.concat(data.nice).filter(s => !currentSelectedSkills.has(s));
+
+      const prompt = `Provide 6 top free learning resources (YouTube channels, official documentation, free interactive courses, GitHub repos) specifically to learn these missing skills for a ${data.title}: ${JSON.stringify(missingSkills)}.
+Return ONLY a raw valid JSON array of objects with keys: "name", "type", "description", "icon", "color". Do NOT wrap in markdown fences.`;
+
+      try {
+        const rawText = await callGemini(prompt);
+        const resources = parseJSON(rawText);
+
+        let html = `
+          <h4 style="margin: 1.5rem 0 1rem 0; color: var(--purple-600);">🤖 AI Suggested Learning Resources</h4>
+          <div class="resources-grid">
+        `;
+        resources.forEach(r => {
+          const badgeClass = r.color ? `badge-${r.color}` : 'badge-purple';
+          html += `
+            <div class="resource-card">
+              <div class="resource-header">
+                <span class="resource-icon">${r.icon || '📚'}</span>
+                <span class="badge ${badgeClass}">${r.type}</span>
+              </div>
+              <h4 style="font-size: 0.95rem;">${r.name}</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">${r.description}</p>
+            </div>
+          `;
+        });
+        html += `</div>`;
+
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `
+          <div class="alert-box alert-error">
+            ❌ <strong>AI Server Error:</strong> ${err.message || 'Failed to fetch AI resources from host server.'}
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `🤖 Find More with AI`;
+      }
+    }
+  </script>
+</body>
+</html>
